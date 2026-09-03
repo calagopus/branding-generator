@@ -58,11 +58,9 @@ body.busy {
   gap: 10px;
   min-width: 0;
 }
-.brand .dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--accent);
+.brand .brand-icon {
+  width: 24px;
+  height: 24px;
   align-self: center;
   flex: none;
 }
