@@ -1,0 +1,22 @@
+{
+  "name": "calagopus-branding-generator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Branding generator for Calagopus",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "worker:dev": "npm run build && wrangler dev",
+    "check": "npm run build && wrangler deploy --dry-run",
+    "deploy": "npm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "vite": "^8.2.2",
+    "wrangler": "^4.127.0"
+  }
+}

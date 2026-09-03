@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calagopus Brander</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2374c0fc'/%3E%3C/svg%3E" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="dot"></span>
+    <h1>Calagopus&nbsp;Branding</h1>
+  </div>
+  <div class="topbar-actions">
+    <button type="button" id="btn_reset" class="ghost">Reset</button>
+  </div>
+</header>
+
+<main class="layout">
+  <!-- Controls -->
+  <section id="controls" aria-label="Builder controls">
+
+    <fieldset class="group">
+      <legend>Presets</legend>
+      <div id="presets" class="chiprow"></div>
+      <p class="hint">Fonts, colours and type sizes are fixed by the brand
+        system — pick a preset.</p>
+    </fieldset>
+
+    <!-- Constants -->
+    <input type="hidden" id="theme" value="brand" />
+    <input type="hidden" id="gap" value="60" />
+    <input type="hidden" id="padding" value="28" />
+    <input type="hidden" id="cornerRadius" value="0" />
+    <input type="hidden" id="mascotHeight" value="328" />
+    <input type="hidden" id="wm_size" value="171" />
+    <input type="hidden" id="tl_size" value="53" />
+    <input type="hidden" id="pf_size" value="53" />
+
+    <fieldset class="group">
+      <legend>Composition</legend>
+      <div class="row">
+        <label for="layout">Layout</label>
+        <select id="layout">
+          <option value="horizontal">Horizontal (mascot left)</option>
+          <option value="vertical">Vertical (mascot top)</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="align">Alignment</label>
+        <select id="align">
+          <option value="start">Start</option>
+          <option value="center">Center</option>
+          <option value="end">End</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset class="group">
+      <legend>Mascot</legend>
+      <div class="row">
+        <label for="showMascot">Show mascot</label>
+        <input type="checkbox" id="showMascot" />
+      </div>
+      <input type="hidden" id="mascot" value="icon" />
+      <div id="mascotPoses" class="poses"></div>
+    </fieldset>
+
+    <fieldset class="group">
+      <legend>Wordmark</legend>
+      <div class="row">
+        <label for="wm_show">Show</label>
+        <input type="checkbox" id="wm_show" />
+      </div>
+      <div class="row">
+        <label for="wm_text">Text</label>
+        <input type="text" id="wm_text" />
+      </div>
+    </fieldset>
+
+    <fieldset class="group">
+      <legend>Tagline</legend>
+      <div class="row">
+        <label for="tl_show">Show</label>
+        <input type="checkbox" id="tl_show" />
+      </div>
+      <div class="row">
+        <label for="tl_text">Text</label>
+        <input type="text" id="tl_text" />
+      </div>
+    </fieldset>
+
+    <fieldset class="group">
+      <legend>Prefix line</legend>
+      <div class="row">
+        <label for="pf_show">Show</label>
+        <input type="checkbox" id="pf_show" />
+      </div>
+      <div class="row">
+        <label for="pf_text">Text</label>
+        <input type="text" id="pf_text" />
+      </div>
+    </fieldset>
+
+    <fieldset class="group">
+      <legend>Export</legend>
+      <div class="row">
+        <label for="ex_format">Format</label>
+        <select id="ex_format">
+          <option value="svg">SVG (vector)</option>
+          <option value="png">PNG</option>
+          <option value="jpg">JPG</option>
+          <option value="webp">WebP</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="ex_width">Width (px)</label>
+        <input type="number" id="ex_width" min="1" max="20000" step="1" />
+      </div>
+      <div class="row">
+        <label for="ex_height">Height (px)</label>
+        <input type="number" id="ex_height" min="1" max="20000" step="1" />
+      </div>
+      <div class="row">
+        <label for="ex_lock">Lock aspect ratio</label>
+        <input type="checkbox" id="ex_lock" />
+      </div>
+      <div class="row">
+        <label for="ex_quality">WebP/JPG quality</label>
+        <input type="range" id="ex_quality" min="0.3" max="1" step="0.01" />
+        <output data-for="ex_quality"></output>
+      </div>
+      <div class="row">
+        <label for="ex_includeBg">Bake background into raster</label>
+        <input type="checkbox" id="ex_includeBg" />
+      </div>
+      <div class="row">
+        <label for="ex_filename">File name</label>
+        <input type="text" id="ex_filename" />
+      </div>
+      <div class="row">
+        <button type="button" id="btn_reset_size" class="ghost">Reset to natural size</button>
+      </div>
+    </fieldset>
+  </section>
+
+  <!-- Preview -->
+  <section class="viewer" aria-label="Preview">
+    <div id="stage" class="stage">
+      <div id="preview" class="preview"></div>
+    </div>
+    <div class="viewbar">
+      <div class="metrics">
+        <span id="dims">-</span>
+        <span class="sep">|</span>
+        <span id="exdims">-</span>
+      </div>
+      <div class="viewbar-controls">
+        <label class="inline"><input type="checkbox" id="fit" checked /> Fit</label>
+        <label class="inline"><input type="checkbox" id="checker" /> Checker</label>
+        <label class="inline">Preview background
+          <select id="preview_bg">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+        <label class="inline">Zoom <input type="range" id="zoom" min="0.1" max="3" step="0.05" value="1" /><output data-for="zoom"></output></label>
+      </div>
+      <div class="export-actions">
+        <button type="button" id="btn_copy_svg" class="ghost">Copy SVG</button>
+        <button type="button" id="btn_copy_png" class="ghost">Copy PNG</button>
+        <button type="button" id="btn_download" class="primary">Download</button>
+      </div>
+    </div>
+    <p id="notice" class="notice" hidden></p>
+  </section>
+</main>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

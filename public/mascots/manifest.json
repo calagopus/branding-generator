@@ -1,0 +1,39 @@
+{
+  "mascots": [
+    {
+      "id": "icon",
+      "label": "Icon",
+      "file": "icon.svg"
+    },
+    {
+      "id": "standing",
+      "label": "Standing",
+      "file": "standing.svg"
+    },
+    {
+      "id": "facing",
+      "label": "Facing",
+      "file": "facing.svg"
+    },
+    {
+      "id": "stretching",
+      "label": "Stretching",
+      "file": "stretching.svg"
+    },
+    {
+      "id": "sleepy",
+      "label": "Sleepy",
+      "file": "sleepy.svg"
+    },
+    {
+      "id": "sleepy-zzz",
+      "label": "Sleepy ZZZ",
+      "file": "sleepy-zzz.svg"
+    },
+    {
+      "id": "jumping",
+      "label": "Jumping",
+      "file": "jumping.svg"
+    }
+  ]
+}
