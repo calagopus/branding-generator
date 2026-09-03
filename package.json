@@ -13,7 +13,7 @@
     "cf-typegen": "wrangler types"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=24"
   },
   "devDependencies": {
     "vite": "^8.2.2",

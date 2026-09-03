@@ -580,7 +580,7 @@ window.CB = CB;
       .catch(function (err) {
         showLoadError(
           "Could not load mascots from " + CB.MASCOTS_BASE +
-            " — serve the app over http (run: npm start), not file://. (" +
+            " - serve the app over http (run: npm start), not file://. (" +
             err.message + ")"
         );
       });
