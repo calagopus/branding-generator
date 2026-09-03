@@ -25,6 +25,40 @@ import { CB } from "./core.js";
     return { viewBox: viewBox.trim(), markup: svg.innerHTML.trim() };
   }
 
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  function parseViewBox(vb) {
+    var p = String(vb).trim().split(/[\s,]+/).map(Number);
+    return { x: p[0] || 0, y: p[1] || 0, w: p[2] || 1, h: p[3] || 1 };
+  }
+
+  function tightBox(viewBox, markup) {
+    var vb = parseViewBox(viewBox);
+    if (typeof document === "undefined" || !document.body || !document.createElementNS) {
+      return vb;
+    }
+    var probe = document.createElementNS(SVGNS, "svg");
+    probe.setAttribute("viewBox", viewBox);
+    probe.setAttribute("width", vb.w);
+    probe.setAttribute("height", vb.h);
+    probe.setAttribute("style",
+      "position:absolute;left:-99999px;top:-99999px;width:" + vb.w + "px;height:" + vb.h + "px;overflow:hidden");
+    probe.innerHTML = markup
+      .replace(/\sclip-path="[^"]*"/g, "")
+      .split("__ACCENT__").join("#000")
+      .split("__WHITE__").join("#000");
+    document.body.appendChild(probe);
+    var box = null;
+    try {
+      box = probe.getBBox();
+    } catch (e) {
+      box = null;
+    }
+    document.body.removeChild(probe);
+    if (!box || !(box.width > 0) || !(box.height > 0)) return vb;
+    return { x: box.x, y: box.y, w: box.width, h: box.height };
+  }
+
   CB.loadMascots = function (base) {
     base = base || CB.MASCOTS_BASE;
     if (base.charAt(base.length - 1) !== "/") base += "/";
@@ -52,6 +86,7 @@ import { CB } from "./core.js";
                   label: entry.label || entry.id,
                   description: entry.description || "",
                   viewBox: parsed.viewBox,
+                  bbox: tightBox(parsed.viewBox, parsed.markup),
                   markup: parsed.markup,
                 };
               });

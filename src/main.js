@@ -55,6 +55,7 @@ window.CB = CB;
 
       export: {
         format: $("ex_format").value,
+        scale: parseFloat($("ex_scale").value) || 1,
         width: parseInt($("ex_width").value, 10) || null,
         height: parseInt($("ex_height").value, 10) || null,
         lockAspect: $("ex_lock").checked,
@@ -88,6 +89,7 @@ window.CB = CB;
       background: { mode: s.background.mode },
       export: {
         format: s.export.format,
+        scale: s.export.scale,
         width: s.export.width,
         height: s.export.height,
         lockAspect: s.export.lockAspect,
@@ -129,6 +131,7 @@ window.CB = CB;
     writeTextCfg("tl", s.tagline);
 
     $("ex_format").value = s.export.format;
+    $("ex_scale").value = s.export.scale || 1;
     $("ex_width").value = s.export.width || "";
     $("ex_height").value = s.export.height || "";
     $("ex_lock").checked = !!s.export.lockAspect;
@@ -153,8 +156,13 @@ window.CB = CB;
     ["pf", "wm", "tl"].forEach(function (p) {
       $(p + "_text").disabled = !$(p + "_show").checked;
     });
-    $("ex_quality").disabled = $("ex_format").value === "svg";
-    $("ex_includeBg").disabled = $("ex_format").value === "svg";
+    var isSvg = $("ex_format").value === "svg";
+    $("ex_scale").disabled = isSvg;
+    $("ex_width").disabled = isSvg;
+    $("ex_height").disabled = isSvg;
+    $("ex_lock").disabled = isSvg;
+    $("ex_quality").disabled = isSvg;
+    $("ex_includeBg").disabled = isSvg;
   }
 
   function syncActivePoses() {
@@ -218,9 +226,10 @@ window.CB = CB;
   function refreshExportSize(state, naturalChanged) {
     var w = state.export.width;
     var h = state.export.height;
+    var scale = state.export.scale || 1;
     if (!w || !h) {
-      w = Math.round(lastNaturalW);
-      h = Math.round(lastNaturalH);
+      w = Math.round(lastNaturalW * scale);
+      h = Math.round(lastNaturalH * scale);
     } else if (naturalChanged && state.export.lockAspect) {
       h = Math.round(w / naturalRatio);
     }
@@ -294,8 +303,9 @@ window.CB = CB;
   }
 
   function rasterize(state, mime, quality) {
-    var w = Math.max(1, parseInt($("ex_width").value, 10) || Math.round(lastNaturalW));
-    var h = Math.max(1, parseInt($("ex_height").value, 10) || Math.round(lastNaturalH));
+    var scale = state.export.scale || 1;
+    var w = Math.max(1, parseInt($("ex_width").value, 10) || Math.round(lastNaturalW * scale));
+    var h = Math.max(1, parseInt($("ex_height").value, 10) || Math.round(lastNaturalH * scale));
     var svg = buildSvg(state, w, h);
     var blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
     var url = URL.createObjectURL(blob);
@@ -474,6 +484,11 @@ window.CB = CB;
       updateExDims();
     });
     $("ex_format").addEventListener("change", updateExDims);
+    $("ex_scale").addEventListener("change", function () {
+      $("ex_width").value = "";
+      $("ex_height").value = "";
+      render();
+    });
     function updateExDims() {
       $("exdims").textContent =
         ($("ex_width").value || "?") + " x " + ($("ex_height").value || "?") +
@@ -481,8 +496,9 @@ window.CB = CB;
     }
 
     $("btn_reset_size").addEventListener("click", function () {
-      $("ex_width").value = Math.round(lastNaturalW);
-      $("ex_height").value = Math.round(lastNaturalH);
+      var scale = parseFloat($("ex_scale").value) || 1;
+      $("ex_width").value = Math.round(lastNaturalW * scale);
+      $("ex_height").value = Math.round(lastNaturalH * scale);
       updateExDims();
     });
     $("btn_download").addEventListener("click", doDownload);

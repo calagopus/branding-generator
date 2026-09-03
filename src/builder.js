@@ -60,13 +60,21 @@ import { CB } from "./core.js";
     return { x: p[0] || 0, y: p[1] || 0, w: p[2] || 1, h: p[3] || 1 };
   }
 
+  function mascotBox(m) {
+    var b = m.bbox;
+    if (b && b.w > 0 && b.h > 0) {
+      return { x: +b.x || 0, y: +b.y || 0, w: b.w, h: b.h };
+    }
+    return parseViewBox(m.viewBox);
+  }
+
   function mascotInner(id, accent, white) {
     var m = byId[id];
     if (!m) return null;
     var markup = namespaceIds(m.markup)
       .split("__ACCENT__").join(accent)
       .split("__WHITE__").join(white);
-    return { markup: markup, vb: parseViewBox(m.viewBox) };
+    return { markup: markup, vb: mascotBox(m) };
   }
   CB.mascotInner = mascotInner;
 
@@ -118,7 +126,7 @@ import { CB } from "./core.js";
         var next = lines[j + 1];
         var gap;
         if (l.kind === "prefix") gap = next.size * 0.16;
-        else if (next.kind === "tagline") gap = next.size * 0.45;
+        else if (next.kind === "tagline") gap = next.size * 0.12;
         else gap = next.size * 0.3;
         y += gap;
       }
@@ -249,9 +257,11 @@ import { CB } from "./core.js";
   CB.mascotThumb = function (id, px, accent, white) {
     var mi = mascotInner(id, accent || "#c9c9c9", white || "#ffffff");
     if (!mi) return "";
+    var m = Math.max(mi.vb.w, mi.vb.h) * 0.06;
     return (
       '<svg xmlns="http://www.w3.org/2000/svg" width="' + px + '" height="' + px +
-      '" viewBox="' + mi.vb.x + " " + mi.vb.y + " " + mi.vb.w + " " + mi.vb.h +
+      '" viewBox="' + round(mi.vb.x - m) + " " + round(mi.vb.y - m) + " " +
+      round(mi.vb.w + m * 2) + " " + round(mi.vb.h + m * 2) +
       '" fill="none">' + mi.markup + "</svg>"
     );
   };

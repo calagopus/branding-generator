@@ -46,7 +46,7 @@ import { CB } from "./core.js";
       layout: "horizontal",
       align: "center",
       gap: 60,
-      padding: 28,
+      padding: 6,
       cornerRadius: 0,
 
       showMascot: true,
@@ -61,6 +61,7 @@ import { CB } from "./core.js";
 
       export: {
         format: "png",
+        scale: 2,
         width: null,
         height: null,
         lockAspect: true,
@@ -91,7 +92,7 @@ import { CB } from "./core.js";
     {
       id: "full-h", label: "Full logo",
       patch: {
-        layout: "horizontal", align: "center", gap: 60, padding: 28, cornerRadius: 0,
+        layout: "horizontal", align: "center", gap: 60, padding: 6, cornerRadius: 0,
         showMascot: true, mascot: "icon", mascotHeight: 328,
         prefix: { show: false }, wordmark: { show: true, size: 128 }, tagline: { show: true, size: 40 },
       },
@@ -99,7 +100,7 @@ import { CB } from "./core.js";
     {
       id: "simple-h", label: "Simple full logo",
       patch: {
-        layout: "horizontal", align: "center", gap: 60, padding: 28,
+        layout: "horizontal", align: "center", gap: 60, padding: 6,
         showMascot: true, mascot: "icon", mascotHeight: 328,
         prefix: { show: false }, wordmark: { show: true, size: 128 }, tagline: { show: false },
       },
@@ -107,7 +108,7 @@ import { CB } from "./core.js";
     {
       id: "full-v", label: "Full logo, vertical",
       patch: {
-        layout: "vertical", align: "center", gap: 60, padding: 28,
+        layout: "vertical", align: "center", gap: 60, padding: 6,
         showMascot: true, mascot: "icon", mascotHeight: 328,
         prefix: { show: false }, wordmark: { show: true, size: 128 }, tagline: { show: true, size: 40 },
       },
@@ -115,7 +116,7 @@ import { CB } from "./core.js";
     {
       id: "simple-v", label: "Full logo, simple, vertical",
       patch: {
-        layout: "vertical", align: "center", gap: 60, padding: 28,
+        layout: "vertical", align: "center", gap: 60, padding: 6,
         showMascot: true, mascot: "icon", mascotHeight: 328,
         prefix: { show: false }, wordmark: { show: true, size: 128 }, tagline: { show: false },
       },
